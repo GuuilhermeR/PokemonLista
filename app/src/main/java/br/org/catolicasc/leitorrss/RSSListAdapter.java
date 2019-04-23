@@ -18,8 +18,8 @@ import java.util.List;
 public class RSSListAdapter extends ArrayAdapter {
     private static final String TAG = "RSSListAdapter";
     private final int layoutResource;
-    private final LayoutInflater layoutInflater;
-    private List<RSSEntry> aplicativos;
+    private final LayoutInflater layoutInflater; // Faz conversão layout resource em objeto
+    private List<RSSEntry> aplicativos; //Lista que passa pro parametro la na aplicação.
 
     public RSSListAdapter(Context context, int resource, List<RSSEntry> aplicativos) {
         super(context, resource);
@@ -47,18 +47,18 @@ public class RSSListAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        RSSEntry appAtual = aplicativos.get(position);
+        RSSEntry appAtual = aplicativos.get(position); //muda
 
-        viewHolder.tvNome.setText(appAtual.getNome());
-        viewHolder.tvArtista.setText(appAtual.getArtista());
-        viewHolder.tvData.setText(appAtual.getDataLancamento());
+        viewHolder.tvNome.setText(appAtual.getNome()); //muda
+        viewHolder.tvArtista.setText(appAtual.getArtista()); //muda
+        viewHolder.tvData.setText(appAtual.getDataLancamento()); //muda
 
         new DownloadImageTask(viewHolder.ivAppImg).execute(appAtual.getUrlImagem());
 
         return convertView;
     }
 
-    private class ViewHolder {
+    private class ViewHolder { //mudar os componentes para o pokemon
         final TextView tvNome;
         final TextView tvArtista;
         final TextView tvData;
