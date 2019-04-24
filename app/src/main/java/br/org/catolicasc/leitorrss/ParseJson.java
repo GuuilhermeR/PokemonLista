@@ -16,6 +16,7 @@ import java.util.List;
 public class ParseJson {
     private static final String TAG = "ParseJson";
     private List<Pokemon> pokemons;
+    private JSONArray jsonArray;
 
     public ParseJson() {
         pokemons = new ArrayList<>();
@@ -28,14 +29,18 @@ public class ParseJson {
     public void parse(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);
-            JSONArray jsonArray = json.getJSONArray("pokemon");
+            jsonArray = json.getJSONArray("pokemon");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject pokemon = jsonArray.getJSONObject(i);
+                Log.d(TAG, "parse: " + pokemon);
                 Pokemon p = new Pokemon(
-                        pokemon.getInt("id"),
+                        pokemon.getString("id"),
                         pokemon.getString("name"),
-                        pokemon.getString("img")
+                        pokemon.getString("img"),
+                        pokemon.getString("num"),
+                        pokemon.getString("height"),
+                        pokemon.getString("weight")
                 );
                 pokemons.add(p);
             }

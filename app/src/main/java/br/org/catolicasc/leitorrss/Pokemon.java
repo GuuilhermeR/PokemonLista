@@ -1,48 +1,52 @@
 package br.org.catolicasc.leitorrss;
 
 public class Pokemon {
-    private int id;
+    private String id;
     private String nome;
     private String imgUrl;
-    private double numero;
-    private double altura;
-    private double peso;
+    private String numero;
+    private String altura;
+    private String peso;
 
-    public double getNumero() {
-        return numero;
-    }
-
-    public void setNumero(double numero) {
+    public Pokemon(String id, String name, String img, String numero, String altura, String peso) {
+        this.id = id;
+        this.nome = name;
+        this.imgUrl = img;
         this.numero = numero;
-    }
-
-    public double getAltura() {
-        return altura;
-    }
-
-    public void setAltura(double altura) {
         this.altura = altura;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
         this.peso = peso;
     }
 
-    public Pokemon(int id, String nome, String imgUrl) {
-        this.id = id;
-        this.nome = nome;
-        this.imgUrl = imgUrl;
+    public String getNumero() {
+        return numero;
     }
 
-    public int getId() {
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getAltura() {
+        return altura;
+    }
+
+    public void setAltura(String altura) {
+        this.altura = altura;
+    }
+
+    public String getPeso() {
+        return peso;
+    }
+
+    public void setPeso(String peso) {
+        this.peso = peso;
+    }
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,5 +64,15 @@ public class Pokemon {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    @Override
+    public String toString() {
+        return  "id=" + id + '\n' +
+                "nome=" + nome + '\n' +
+                ", urlImagem=" + imgUrl + '\n' +
+                ", numero=" + numero + '\n' +
+                ", altura=" + altura + '\n'
+                + ", peso=" + peso + '\n';
     }
 }

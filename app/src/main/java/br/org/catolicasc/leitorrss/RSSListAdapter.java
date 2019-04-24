@@ -13,24 +13,72 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class RSSListAdapter extends ArrayAdapter {
     private static final String TAG = "RSSListAdapter";
     private final int layoutResource;
     private final LayoutInflater layoutInflater; // Faz conversão layout resource em objeto
-    private List<RSSEntry> aplicativos; //Lista que passa pro parametro la na aplicação.
+    private List<Pokemon> pokemon; //Lista que passa pro parametro la na aplicação.
+    private Bitmap imagem;
 
-    public RSSListAdapter(Context context, int resource, List<RSSEntry> aplicativos) {
+    public RSSListAdapter(Context context, int resource, List<Pokemon> aplicativos) {
         super(context, resource);
         this.layoutResource = resource;
         this.layoutInflater = LayoutInflater.from(context);
-        this.aplicativos = aplicativos;
+        this.pokemon = aplicativos;
     }
 
     @Override
     public int getCount() {
-        return aplicativos.size();
+        return pokemon.size();
+    }
+
+    private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                int resposta = connection.getResponseCode();
+
+                if (resposta != HttpURLConnection.HTTP_OK) { // se resposta não foi OK
+                    if (resposta == HttpURLConnection.HTTP_MOVED_TEMP  // se for um redirect
+                            || resposta == HttpURLConnection.HTTP_MOVED_PERM
+                            || resposta == HttpURLConnection.HTTP_SEE_OTHER) {
+                        // pegamos a nova URL e abrimos nova conexão!
+                        String novaUrl = connection.getHeaderField("Location");
+                        connection = (HttpURLConnection) new URL(novaUrl).openConnection();
+                    }
+                }
+                InputStream inputStream = connection.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                return bitmap;
+            } catch (Exception e) {
+                Log.e(TAG, "doInBackground: Erro ao baixar imagem"
+                        + e.getMessage());
+            }
+
+            return null;
+        }
+    }
+
+    public void downloadImagem(String imgUrl) {
+        ImageDownloader imageDownloader = new ImageDownloader();
+
+        try {
+            // baixar a imagem da internet
+            imagem = imageDownloader.execute(imgUrl).get();
+            // atribuir a imagem ao imageView
+        } catch (Exception e) {
+            Log.e(TAG, "downloadImagem: Impossível baixar imagem"
+                    + e.getMessage());
+        }
     }
 
     @Override
@@ -47,27 +95,33 @@ public class RSSListAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        RSSEntry appAtual = aplicativos.get(position); //muda
+        Pokemon appAtual = pokemon.get(position);
 
-        viewHolder.tvNome.setText(appAtual.getNome()); //muda
-        viewHolder.tvArtista.setText(appAtual.getArtista()); //muda
-        viewHolder.tvData.setText(appAtual.getDataLancamento()); //muda
-
-        new DownloadImageTask(viewHolder.ivAppImg).execute(appAtual.getUrlImagem());
+        viewHolder.tvID.setText(appAtual.getId());
+        viewHolder.tvNome.setText(appAtual.getNome());
+        viewHolder.tvNumero.setText(appAtual.getNumero());
+        viewHolder.tvAltura.setText(appAtual.getAltura());
+        viewHolder.tvPeso.setText(appAtual.getPeso());
+        downloadImagem(appAtual.getImgUrl());
+        viewHolder.ivAppImg.setImageBitmap(imagem);
 
         return convertView;
     }
 
     private class ViewHolder { //mudar os componentes para o pokemon
+        final TextView tvID;
         final TextView tvNome;
-        final TextView tvArtista;
-        final TextView tvData;
+        final TextView tvNumero;
+        final TextView tvAltura;
+        final TextView tvPeso;
         final ImageView ivAppImg;
 
         ViewHolder(View v) {
+            this.tvID = v.findViewById(R.id.tvID);
             this.tvNome = v.findViewById(R.id.tvNome);
-            this.tvArtista = v.findViewById(R.id.tvArtista);
-            this.tvData = v.findViewById(R.id.tvData);
+            this.tvNumero = v.findViewById(R.id.tvNumero);
+            this.tvAltura = v.findViewById(R.id.tvAltura);
+            this.tvPeso = v.findViewById(R.id.tvPeso);
             this.ivAppImg = v.findViewById(R.id.ivAppImg);
         }
     }
