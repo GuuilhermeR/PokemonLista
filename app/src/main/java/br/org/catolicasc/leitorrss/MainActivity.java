@@ -1,39 +1,63 @@
 package br.org.catolicasc.leitorrss;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ListView rssListView;
     private ImageView imgView;
+    private ListView lvPokemon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rssListView = findViewById(R.id.rssListView);
+        rssListView = findViewById(R.id.lvPokemon);
 
         Log.d(TAG, "onCreate: começando AsyncTask");
         DownloadDeDados downloadDeDados = new DownloadDeDados();
         downloadDeDados.execute("https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json");
         Log.d(TAG, "onCreate: final do onCreate");
+
+        lvPokemon = findViewById(R.id.lvPokemon);
+
+        final ArrayList<String> pokemons = new ArrayList<>();
+
+        pokemons.add("Pikachu");
+        pokemons.add("Tokepi");
+        pokemons.add("Ekans");
+        pokemons.add("Raichu");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                MainActivity.this, android.R.layout.simple_list_item_1, pokemons
+        );
+
+        lvPokemon.setAdapter(arrayAdapter);
+        lvPokemon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("nome", pokemons.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
 
