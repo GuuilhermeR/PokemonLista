@@ -8,13 +8,13 @@ public class Pokemon {
     private String altura;
     private String peso;
 
-    public Pokemon(String id, String name, String img, String numero, String altura, String peso) {
+    public Pokemon(String id, String name, String img) {
         this.id = id;
         this.nome = name;
         this.imgUrl = img;
-        this.numero = numero;
-        this.altura = altura;
-        this.peso = peso;
+        //this.numero = numero;
+       // this.altura = altura;
+       // this.peso = peso;
     }
 
     public String getNumero() {
@@ -46,33 +46,21 @@ public class Pokemon {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public String getImgUrl() {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 
     @Override
     public String toString() {
         return  "id=" + id + '\n' +
                 "nome=" + nome + '\n' +
-                ", urlImagem=" + imgUrl + '\n' +
-                ", numero=" + numero + '\n' +
-                ", altura=" + altura + '\n'
-                + ", peso=" + peso + '\n';
+                ", urlImagem=" + imgUrl + '\n';
     }
 }

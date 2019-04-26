@@ -99,9 +99,6 @@ public class RSSListAdapter extends ArrayAdapter {
 
         viewHolder.tvID.setText(appAtual.getId());
         viewHolder.tvNome.setText(appAtual.getNome());
-        viewHolder.tvNumero.setText(appAtual.getNumero());
-        viewHolder.tvAltura.setText(appAtual.getAltura());
-        viewHolder.tvPeso.setText(appAtual.getPeso());
         downloadImagem(appAtual.getImgUrl());
         viewHolder.ivAppImg.setImageBitmap(imagem);
 
@@ -111,7 +108,6 @@ public class RSSListAdapter extends ArrayAdapter {
     private class ViewHolder { //mudar os componentes para o pokemon
         final TextView tvID;
         final TextView tvNome;
-        final TextView tvNumero;
         final TextView tvAltura;
         final TextView tvPeso;
         final ImageView ivAppImg;
@@ -119,7 +115,6 @@ public class RSSListAdapter extends ArrayAdapter {
         ViewHolder(View v) {
             this.tvID = v.findViewById(R.id.tvID);
             this.tvNome = v.findViewById(R.id.tvNome);
-            this.tvNumero = v.findViewById(R.id.tvNumero);
             this.tvAltura = v.findViewById(R.id.tvAltura);
             this.tvPeso = v.findViewById(R.id.tvPeso);
             this.ivAppImg = v.findViewById(R.id.ivAppImg);
