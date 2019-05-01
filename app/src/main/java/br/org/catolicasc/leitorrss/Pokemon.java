@@ -1,6 +1,11 @@
 package br.org.catolicasc.leitorrss;
 
-public class Pokemon {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Pokemon implements Serializable {
     private String id;
     private String nome;
     private String imgUrl;
@@ -8,14 +13,24 @@ public class Pokemon {
     private String altura;
     private String peso;
 
-    public Pokemon(String id, String name, String img) {
+    public Pokemon(String id, String name, String img, String numero, String altura, String peso) {
         this.id = id;
         this.nome = name;
         this.imgUrl = img;
-        //this.numero = numero;
-       // this.altura = altura;
-       // this.peso = peso;
+        this.numero = numero;
+        this.altura = altura;
+        this.peso = peso;
     }
+
+    protected Pokemon(Parcel in) {
+        id = in.readString();
+        nome = in.readString();
+        imgUrl = in.readString();
+        numero = in.readString();
+        altura = in.readString();
+        peso = in.readString();
+    }
+
 
     public String getNumero() {
         return numero;
@@ -63,4 +78,5 @@ public class Pokemon {
                 "nome=" + nome + '\n' +
                 ", urlImagem=" + imgUrl + '\n';
     }
+
 }

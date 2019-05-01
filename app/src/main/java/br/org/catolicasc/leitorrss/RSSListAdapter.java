@@ -81,6 +81,20 @@ public class RSSListAdapter extends ArrayAdapter {
         }
     }
 
+    public Bitmap returnImagemTask(String imgUrl){
+        ImageDownloader imageDownloader = new ImageDownloader();
+        try {
+            imagem = imageDownloader.execute(imgUrl).get();
+            return imagem;
+        } catch (Exception e) {
+            Log.e(TAG, "downloadImagem: Impossível baixar imagem"
+                    + e.getMessage());
+        }
+
+        return null;
+    }
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
@@ -102,6 +116,7 @@ public class RSSListAdapter extends ArrayAdapter {
         downloadImagem(appAtual.getImgUrl());
         viewHolder.ivAppImg.setImageBitmap(imagem);
 
+
         return convertView;
     }
 
@@ -121,7 +136,7 @@ public class RSSListAdapter extends ArrayAdapter {
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;

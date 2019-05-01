@@ -22,25 +22,27 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ListView lvPokemon;
+    private RSSListAdapter rssListAdapter;
+    private ArrayList<Pokemon> pokemons = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvPokemon = findViewById(R.id.lvPokemon);
-        final ArrayList<String> numerosArray = new ArrayList<>();
 
+        ParseJson pjson = new ParseJson();
 
-
-        DownloadDeDados downloadDeDados = new DownloadDeDados();
+        final DownloadDeDados downloadDeDados = new DownloadDeDados();
         downloadDeDados.execute("https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json");
 
         lvPokemon = findViewById(R.id.lvPokemon);
 
+        lvPokemon.setAdapter(rssListAdapter);
         lvPokemon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("pokemon", pokemons.get(position));
                 startActivity(intent);
             }
         });
@@ -63,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
             //ArrayAdapter<RSSEntry> arrayAdapter = new ArrayAdapter<>(
             //        MainActivity.this, R.layout.list_item, parseRSS.getAplicacoes());
            // rssListView.setAdapter(arrayAdapter);
-            final RSSListAdapter rssListAdapter = new RSSListAdapter(MainActivity.this,
+            RSSListAdapter rssListAdapter = new RSSListAdapter(MainActivity.this,
                     R.layout.list_complex_item, parseJson.getPokemons());
             lvPokemon.setAdapter(rssListAdapter);
+            pokemons = (ArrayList<Pokemon>) parseJson.getPokemons();
 
         }
 

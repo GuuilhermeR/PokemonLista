@@ -37,10 +37,10 @@ public class ParseJson {
                 Pokemon p = new Pokemon(
                         pokemon.getString("id"),
                         pokemon.getString("name"),
-                        pokemon.getString("img")
-                      //  pokemon.getString("num"),
-                      //  pokemon.getString("height"),
-                      //  pokemon.getString("weight")
+                        pokemon.getString("img"),
+                        pokemon.getString("num"),
+                        pokemon.getString("height"),
+                        pokemon.getString("weight")
                 );
                 pokemons.add(p);
             }
